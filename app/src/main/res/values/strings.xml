@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">recipes-android</string>
+    <string name="search_items">Search items</string>
+    <string name="clear_search">Clear search</string>
+    <string name="recipes">Recipes</string>
 </resources>

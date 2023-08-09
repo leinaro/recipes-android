@@ -9,42 +9,58 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.leinaro.recipes.ui.main.MainUIState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.leinaro.recipes.Dummy
 import com.leinaro.recipes.domain.model.Recipe
+import com.leinaro.recipes.ui.common.SearchView
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecipeListScreen(
     modifier: Modifier = Modifier,
     uiState: MainUIState?,
-    onRecipeItemClick: (String) -> Unit = {}
+    onRecipeItemClick: (String) -> Unit = {},
+    onQueryChange: (String) -> Unit = {},
 ) {
-    LazyColumn(
-        modifier = modifier,
+    val textState = remember { mutableStateOf(TextFieldValue(uiState?.query.orEmpty())) }
+
+    Column(
+        modifier = modifier.fillMaxSize().padding(horizontal = 16.dp),
     ) {
-        items(items = uiState?.recipeList.orEmpty(), key = {it.id}){recipe ->
-            Box(
-                modifier = Modifier.animateItemPlacement(
-                    animationSpec = tween(
-                        durationMillis = 600
+        SearchView(
+            state = textState,
+            onQueryChange = onQueryChange,
+        )
+        LazyColumn {
+            items(items = uiState?.searchResult.orEmpty(), key = {it.id}){recipe ->
+                Box(
+                    modifier = Modifier.animateItemPlacement(
+                        animationSpec = tween(
+                            durationMillis = 600
+                        )
                     )
-                )
-            ){
-                RecipeItemView(
-                    recipe = recipe,
-                    onClick = onRecipeItemClick
-                )
-                Divider()
+                ){
+                    RecipeItemView(
+                        recipe = recipe,
+                        onClick = onRecipeItemClick
+                    )
+                    Divider()
+                }
             }
         }
     }

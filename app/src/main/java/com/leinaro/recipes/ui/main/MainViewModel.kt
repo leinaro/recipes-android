@@ -2,6 +2,7 @@ package com.leinaro.recipes.ui.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.query
 import com.leinaro.recipes.domain.model.Recipe
 import com.leinaro.recipes.domain.usecase.GetAllRecipesInteractor
 import com.leinaro.recipes.ui.common.BaseViewModel
@@ -29,7 +30,9 @@ class MainViewModel @Inject constructor(
                 .collect { recipes ->
                     setValue(
                         MainUIState(
+                            query = "",
                             recipeList = recipes,
+                            searchResult = recipes,
                         )
                     )
                 }
@@ -41,8 +44,29 @@ class MainViewModel @Inject constructor(
             recipe.id == uuid
         } ?: throw Exception("Error finding recipe")
     }
+
+    fun onQueryChange(query: String) {
+        val searchResult = if (query.isEmpty()){
+            uiState.value?.recipeList
+        } else {
+            uiState.value?.recipeList?.filter { recipe ->
+                recipe.name.contains(query, ignoreCase = true) || recipe.ingredients.contains(query, ignoreCase = true)
+            }
+        }.orEmpty()
+
+        setValue(
+            uiState.value?.copy(
+                query = query,
+                searchResult = searchResult.ifEmpty {
+                    uiState.value?.recipeList.orEmpty()
+                }
+            )
+        )
+    }
 }
 
 data class MainUIState(
+    val query: String = "",
+    val searchResult: List<Recipe> = emptyList(),
     val recipeList: List<Recipe> = emptyList(),
 )

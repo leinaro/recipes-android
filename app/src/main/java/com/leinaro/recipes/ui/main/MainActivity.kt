@@ -20,17 +20,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.leinaro.recipes.R
 import com.leinaro.recipes.ui.common.TopBar
 import com.leinaro.recipes.ui.common.ViewEvent
 import com.leinaro.recipes.ui.common.getActivity
@@ -92,8 +94,8 @@ private fun MainScreen(
         }
     }
 
-    val topBarTitle by remember {
-        mutableStateOf("Recipes")
+    var navigationBackEnabled by remember {
+        mutableStateOf(false)
     }
 
     Scaffold(
@@ -105,7 +107,8 @@ private fun MainScreen(
         topBar = {
             TopBar(
                 navController= navController,
-                title = topBarTitle,
+                title = stringResource(R.string.recipes),
+                navigationBackEnabled = navigationBackEnabled,
             )
         },
     ) { paddingValues->
@@ -113,6 +116,9 @@ private fun MainScreen(
             modifier = Modifier.padding(paddingValues),
             navController = navController,
             viewModel = viewModel,
+            onNavigationBackEnabled = {
+                navigationBackEnabled = it
+            }
         )
 
     }
@@ -130,12 +136,14 @@ fun MainScreenPreview() {
 private fun MainNavigationGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel: MainViewModel = viewModel()
+    viewModel: MainViewModel = viewModel(),
+    onNavigationBackEnabled: (Boolean) -> Unit = {},
 ){
     val uiState by viewModel.uiState.collectAsState()
 
     NavHost(navController = navController, startDestination = MainScreenRoutes.RecipeListScreen.route) {
         composable(MainScreenRoutes.RecipeListScreen.route) {
+            onNavigationBackEnabled(false)
             RecipeListScreen(
                 modifier= modifier,
                 uiState = uiState,
@@ -144,7 +152,8 @@ private fun MainNavigationGraph(
                         MainScreenRoutes.RecipeDetailScreen.route
                             .replace("{uuid}", uuid, false)
                     )
-                }
+                },
+                onQueryChange = viewModel::onQueryChange
             )
         }
         composable(
@@ -154,6 +163,7 @@ private fun MainNavigationGraph(
             ),
         ){ backStackEntry ->
             backStackEntry.arguments?.getString("uuid")?.let { uuid ->
+                onNavigationBackEnabled(true)
                 val recipe = viewModel.getRecipe(uuid)
                 RecipeDetailScreen(
                     recipe = recipe,
@@ -170,12 +180,10 @@ private fun MainNavigationGraph(
             ),
         ){ backStackEntry ->
             backStackEntry.arguments?.getString("uuid")?.let { uuid ->
+                onNavigationBackEnabled(true)
                 val recipe = viewModel.getRecipe(uuid)
                 RecipeMapScreen(
                     recipe = recipe,
-                    navigateTo = { route ->
-                        viewModel.emitAction(ViewEvent.NavigateTo(route = route))
-                    }
                 )
             }
         }
