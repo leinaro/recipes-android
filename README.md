@@ -27,32 +27,40 @@ Muestra el detalle de la receta, que incluye: Imagen, Nombre, Descripción y Bot
 Mustra un marcador en el mapa que muestra el origen de la receta.
 
 ##Decisiones técnicas
-###SwiftPM 
-[SwiftPM](https://github.com/apple/swift-package-manager) es el administrador de paquetes de Swift. Se utiliza para administrar las dependencias de un proyecto de Swift y permite darle una architectura modular al proyecto. [Modular Project Structure with Swift Package Manager (SPM)](https://santoshbotre01.medium.com/modular-project-structure-with-swift-package-manager-spm-c81fb62c8619)
+###MVVM 
+[MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel?hl=es-419) se utiliza para comunicar la capa de datos y la ui.
 
-###The Composable Architecture
-[The Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) es una biblioteca para administrar el estado de las aplicaciones de iOS. Proporciona una manera concisa y fácil de administrar el estado, realizar efectos secundarios y probar aplicaciones.
+###Clean Architecture
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) se organizó el proyecto en tres niveles principales que pueden ser modulos a futuro:
+
+- ui
+- domain
+- data
+Puede encontrar más detalles en [recommended-app-architecture](https://developer.android.com/jetpack/guide?hl=es-419#recommended-app-architecture) y en el blog [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
 ###Networking
-Para las peticiones al API se utilizó [Alamofire](https://github.com/Alamofire/Alamofire). Alamofire proporciona una forma sencilla para hacer solicitudes HTTP y manejar respuestas. 
+[Retrofit](https://square.github.io/retrofit/) es un api que convierte el codigo kotlin a llamados HTTP y devuelve llamados como objetos kotlin.
+[Okhttp Interceptor]() es un mecanismo para puede monitorear, reescribir y reintentar llamadas.
+[Gson](https://github.com/square/retrofit/tree/master/retrofit-converters/gson) es una biblioteca que permite convertir objetos Kotlin a JSON y viceversa. 
 
 ###Datos
 Para la generación de datos se utilizó mockaroo. [Mockaroo](https://mockaroo.com/) es una herramienta en línea que te permite crear modelos de datos de prueba. Puedes usar Mockaroo para crear tablas, registros y campos de prueba. También puedes exportar tus modelos de datos de prueba en una variedad de formatos, incluidos JSON, CSV y XML.
 
-###SwiftUI
-[SwiftUI](https://developer.apple.com/xcode/swiftui/) es un marco de desarrollo de interfaz de usuario declarativo y reactivo desarrollado por Apple Inc. para crear interfaces de usuario para aplicaciones iOS, iPadOS, macOS, tvOS y watchOS.
+###Compose
+[Compose](https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwz8emBhDrARIsANNJjS5j4cQlxMs49HRdxGD7IrXgeJA5Wccv59zTQdM9Iy89-6PezQJztZMaAv6dEALw_wcB&gclsrc=aw.ds&hl=es-419) es una API declarativa, lo que significa que puede describir la interfaz de usuario de su aplicación en términos de lo que debe verse, en lugar de cómo debe verse. 
 
-###GoogleMaps
-El SDK de [Google Maps](https://github.com/googlemaps/google-maps-ios-utils) para iOS es una biblioteca de software que permite a los desarrolladores agregar mapas a sus aplicaciones iOS. El SDK proporciona una amplia gama de funciones, incluyendo la capacidad de agregar marcadores, rutas y otras formas a los mapas, así como la capacidad de interactuar con los mapas de diversas maneras.
+
+
+###GoogleMaps   
+El SDK de [Google Maps](https://github.com/googlemaps/android-maps-compose) para Android y compose es una biblioteca de software que permite a los desarrolladores agregar mapas a sus aplicaciones android. El SDK proporciona una amplia gama de funciones, incluyendo la capacidad de agregar marcadores, rutas y otras formas a los mapas, así como la capacidad de interactuar con los mapas de diversas maneras.
 
 ###Inyección de dependencias
-Se implemento inyección de dependencias basica a travez del constructor.
+[Hilt](https://developer.android.com/training/dependency-injection/hilt-android?hl=es-419) es una biblioteca de inserción de dependencias para Android que permite reducir el trabajo repetitivo de insertar dependencias de forma manual en tu proyecto.
 
 ###Internacionalización
 Disponible en ingles y español
 
 ###Unit test
-###Sourcery
 
 ## Developers
 
