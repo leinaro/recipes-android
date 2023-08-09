@@ -1,0 +1,4 @@
+appId: com.leinaro.recipes
+---
+- launchApp
+- tapOn: "quis libero"

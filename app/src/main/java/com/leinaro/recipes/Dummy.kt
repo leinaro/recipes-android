@@ -14,4 +14,6 @@ object Dummy {
         latitude = 0.0,
         longitude = 0.0,
     )
+
+    val recipeList = listOf<Recipe>(recipe)
 }

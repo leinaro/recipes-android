@@ -61,6 +61,7 @@ El SDK de [Google Maps](https://github.com/googlemaps/android-maps-compose) para
 Disponible en ingles y español
 
 ###Unit test
+[Mockito](https://site.mockito.org/) is un framework que ayuda a crear mocks de las interfaces y objetos kotlin, brinda herramientas para desarrollar las pruebas unitarias.
 
 ## Developers
 
